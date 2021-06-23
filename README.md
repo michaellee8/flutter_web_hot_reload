@@ -88,11 +88,6 @@ class C {
 
 ```
 
-transforming the above call to function prototype based AMD code should not be 
-a problem: 
-```js
-// TODO: AMD es5 code
-```
 
 ## Analysis
 
