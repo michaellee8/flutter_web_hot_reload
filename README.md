@@ -91,4 +91,62 @@ class C {
 
 ## Analysis
 
+### Compability with current Dart VM Hot Reload
+
+In order to discuss the compatibility of this implementation with Dart VM's 
+implementation, we will have to first dicuss how Dart VM's Hot Reload works.
+
+Some information can be seen in Dart VM's [wiki][1], but we would need to look at 
+the sources. A hot reload in Dart VM is triggered by the [reloadSource][2] RPC in 
+the Dart VM Service protocol, which was implemented in [service.cc][3] in 
+[ReloadSources][4]. The reload request is passed to [IsolateGroup::ReloadSources in isolate.cc][5], then [IsolateGroupReloadContext::Reload in isolate_reload.cc][6]. 
+It is interesting that a hot reload request is handled in 4 pharses with 
+the ability to rollback. It is [ReloadPharse4CommitPrepare and ReloadPharse4CommitFinish][8] 
+that does the actual reloading. By investgating these code, we can deduce that Dart VM 
+does the following when doing hot reload:
+
+1. Copy static fields from old to new class, also save fields and functions of 
+   the old class. It also migrate static closures.
+2. Save fields and functiosn of the removed class.
+3. Also mark library as dirty is it imports / is imported by libraries that will 
+   be reloaded. (not sure about this).
+4. Create two lists of old and new class, field, closure, libraries and library prefixes (?)
+5. Disable gc, allow heap grows without limit.
+6. Morph (replace?) all old instances in the heap to new instance. 
+7. Discard the old classes.
+8. Give the morphed object its new size.
+9. Set key and object WeakMap (?).
+10. Visit objects and pointers (?).
+11. Replace enums.
+12. Process constants (Note that js constants are basically dart final, I doubt js has real constants).
+
+I don't pretend to understand the whole hot reload process here. But as 
+far as I am concerned, the actual patching logic is in object_reload.cc, 
+which the follow is performed:
+
+- Copy the value of static fields of the old class to the new class.
+- Patch all non-eval non-closure functions and fields.
+- Migrate static closures
+
+It seems that Dart VM's type system use hash tables for fields and 
+functions so that they don't has to be explictly updated in hot reload. 
+Instead they are creatd when referenced (?).
+
+Here is how each of the operation that Dart VM does in hot reload can be mapped 
+into JS operations.
+
+#### Moving static fields
+
+
+
+[1]: https://github.com/dart-lang/sdk/wiki/Hot-reload
+[2]: https://github.com/dart-lang/sdk/blob/master/runtime/vm/service/service.md#reloadsources
+[3]: https://github.com/dart-lang/sdk/blob/master/runtime/vm/service.cc
+[4]: https://github.com/dart-lang/sdk/blob/master/runtime/vm/service.cc#L3397
+[5]: https://github.com/dart-lang/sdk/blob/master/runtime/vm/isolate.cc#L2061
+[6]: https://github.com/dart-lang/sdk/blob/master/runtime/vm/isolate_reload.cc#L551
+[7]: https://github.com/dart-lang/sdk/blob/master/runtime/vm/isolate_reload.cc#L2407
+[8]: https://github.com/dart-lang/sdk/blob/master/runtime/vm/isolate_reload.cc#L1088
+
+
 TODO: In depth analysis on issues mentioned in the references

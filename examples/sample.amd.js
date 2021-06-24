@@ -18,7 +18,7 @@ define(['dart_sdk'], (function load__sample_amd(dart_sdk) {
       this[d] = value;
     }
     c(s) {
-      if (s == null) dart.nullFailed(I[0], 8, 17, "s");
+      if (s == null) dart.nullFailed(I[0], 9, 17, "s");
       core.print("c " + dart.str(s));
       this.d = "d 2";
     }
@@ -38,6 +38,28 @@ define(['dart_sdk'], (function load__sample_amd(dart_sdk) {
     __proto__: dart.getFields(sample.C.__proto__),
     d: dart.fieldType(core.String)
   }));
+  dart.defineLazy(sample.C, {
+    /*sample.C.s*/get s() {
+      return "static";
+    },
+    set s(_) {}
+  }, false);
+  sample.D = class D extends sample.C {
+    e() {
+      core.print("e");
+    }
+  };
+  (sample.D.new = function() {
+    sample.D.__proto__.new.call(this);
+    ;
+  }).prototype = sample.D.prototype;
+  dart.addTypeTests(sample.D);
+  dart.addTypeCaches(sample.D);
+  dart.setMethodSignature(sample.D, () => ({
+    __proto__: dart.getMethods(sample.D.__proto__),
+    e: dart.fnType(dart.void, [])
+  }));
+  dart.setLibraryUri(sample.D, I[0]);
   sample.b = function b() {
     core.print("b 1");
   };
@@ -46,7 +68,7 @@ define(['dart_sdk'], (function load__sample_amd(dart_sdk) {
       return "a";
     }
   }, false);
-  dart.trackLibraries("sample_amd", {
+  dart.trackLibraries("sample.amd", {
     "org-dartlang-app:/sample.dart": sample
   }, {
   }, null);
@@ -56,4 +78,4 @@ define(['dart_sdk'], (function load__sample_amd(dart_sdk) {
   };
 }));
 
-//# sourceMappingURL=sample_amd.js.map
+//# sourceMappingURL=sample.amd.js.map

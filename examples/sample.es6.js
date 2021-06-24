@@ -15,7 +15,7 @@ sample.C = class C extends core.Object {
     this[d] = value;
   }
   c(s) {
-    if (s == null) dart.nullFailed(I[0], 8, 17, "s");
+    if (s == null) dart.nullFailed(I[0], 9, 17, "s");
     core.print("c " + dart.str(s));
     this.d = "d 2";
   }
@@ -35,6 +35,28 @@ dart.setFieldSignature(sample.C, () => ({
   __proto__: dart.getFields(sample.C.__proto__),
   d: dart.fieldType(core.String)
 }));
+dart.defineLazy(sample.C, {
+  /*sample.C.s*/get s() {
+    return "static";
+  },
+  set s(_) {}
+}, false);
+sample.D = class D extends sample.C {
+  e() {
+    core.print("e");
+  }
+};
+(sample.D.new = function() {
+  sample.D.__proto__.new.call(this);
+  ;
+}).prototype = sample.D.prototype;
+dart.addTypeTests(sample.D);
+dart.addTypeCaches(sample.D);
+dart.setMethodSignature(sample.D, () => ({
+  __proto__: dart.getMethods(sample.D.__proto__),
+  e: dart.fnType(dart.void, [])
+}));
+dart.setLibraryUri(sample.D, I[0]);
 sample.b = function b() {
   core.print("b 1");
 };
@@ -43,9 +65,9 @@ dart.defineLazy(sample, {
     return "a";
   }
 }, false);
-dart.trackLibraries("sample_es6", {
+dart.trackLibraries("sample.es6", {
   "org-dartlang-app:/sample.dart": sample
 }, {
 }, null);
 
-//# sourceMappingURL=sample_es6.js.map
+//# sourceMappingURL=sample.es6.js.map
