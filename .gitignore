@@ -1,1 +1,3 @@
 Session.vim
+/dart-sdk/*
+!/dart-sdk/.gclient
