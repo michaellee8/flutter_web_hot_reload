@@ -88,7 +88,11 @@ class C {
 
 ```
 
+## POC Scope
 
-## Analysis
+The initial experimental POC version will only support changing method signature 
+and method body of top-level functions, static methods and class methods. 
 
-TODO: In depth analysis on issues mentioned in the references
+A later experimental version plans to implmenent all cases that the current Flutter native 
+hot reload functionality support, which means that if hot reload works in native, 
+it will work on web. 
