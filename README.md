@@ -126,17 +126,58 @@ which the follow is performed:
 
 - Copy the value of static fields of the old class to the new class.
 - Patch all non-eval non-closure functions and fields.
-- Migrate static closures
+- Migrate static closures (methods?)
 
 It seems that Dart VM's type system use hash tables for fields and 
 functions so that they don't has to be explictly updated in hot reload. 
 Instead they are creatd when referenced (?).
 
-Here is how each of the operation that Dart VM does in hot reload can be mapped 
-into JS operations.
+It is also useful to know that there are onlythree kinds of variables in JS, 
+namely global/module scope variables, local variables, and class fields (object members). 
+Class methods are treated as class field that is a function. Class is just 
+another function as well. Non-static class members can be accessed by Class.prototype.
+Also, we are not interested with local scope variables (like closures). We will 
+dealing with module scope variables (including static method and members) and 
+class fields/methods only. At this POC stage, we are only intersted in 
+AMD modules without rollback support (I am not even sure if rollback can be 
+implemented). If hot reload is broken, the develoepr is expected to simply do 
+hot restart. 
 
-#### Moving static fields
+Here is how each of the operation that Dart VM does in hot reload 
+can be mapped into JS operations.
 
+#### Adding/deleting/changing static fields
+
+As long as we don't replace the "Class" object, static fields will be 
+retained. Adding a static field can be done by `Class.staticField = value`,
+while removing a static field can be done by `delete Class.staticField`.
+
+#### Adding static methods
+
+```js
+Class.staticMethod = function (){
+  return _METHODS_["uuid"].apply(this,arguments);
+}
+_METHODS_["uuid"] = function (){
+  something();
+}
+```
+
+#### Deleting static mwthods
+
+```js
+delete Class.staticMethod;
+delete _METHODS_["uuid"];
+```
+
+#### Changing static methods
+
+```js
+
+_METHODS_["uuid"] = function (){
+  something();
+}
+```
 
 
 [1]: https://github.com/dart-lang/sdk/wiki/Hot-reload
