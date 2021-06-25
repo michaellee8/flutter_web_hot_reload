@@ -1,0 +1,8 @@
+[submodule "flutter"]
+	path = flutter
+	url = https://github.com/michaellee8/flutter.git
+	branch = feat/web-hot-reload-poc-v0.1.0
+[submodule "webdev"]
+	path = webdev
+	url = https://github.com/michaellee8/dart-webdev.git
+	branch = feat/web-hot-reload-poc-v0.1.0
