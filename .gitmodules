@@ -6,3 +6,7 @@
 	path = webdev
 	url = https://github.com/michaellee8/dart-webdev.git
 	branch = feat/web-hot-reload-poc-v0.1.0
+[submodule "dart-sdk/sdk"]
+	path = dart-sdk/sdk
+	url = https://github.com/michaellee8/dart-sdk.git
+	branch = feat/web-hot-reload-poc-v0.1.0
