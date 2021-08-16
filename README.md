@@ -1,4 +1,4 @@
-# POC Proposal on implmenting Hot Reload in Fltter Web
+# POC Proposal on implementing Hot Reload in Fltter Web
 
 This document contains the proposql of the implementation of hot reload feature 
 of flutter web, using type information in dart and some javascript techniques.
@@ -8,7 +8,7 @@ of flutter web, using type information in dart and some javascript techniques.
 - https://flutter.dev/docs/development/tools/hot-reload
 - https://github.com/dart-lang/sdk/wiki/Hot-reload
 
-## Apppach
+## Approach
 
 Instead of referencing the hot reload implmentation of other frameworks like 
 Vue and React, I have found that Flutter's lack of functional component support 
@@ -93,6 +93,6 @@ class C {
 The initial experimental POC version will only support changing method signature 
 and method body of top-level functions, static methods and class methods. 
 
-A later experimental version plans to implmenent all cases that the current Flutter native 
+A later experimental version plans to implement all cases that the current Flutter native 
 hot reload functionality support, which means that if hot reload works in native, 
 it will work on web. 
